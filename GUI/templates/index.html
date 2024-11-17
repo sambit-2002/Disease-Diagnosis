@@ -1,0 +1,116 @@
+<html>
+<head>
+    <title>Chest X ray detection</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <style>
+        body {
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+            margin-top: 20px;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            color: #555;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .btn-info {
+            width: 100%;
+            padding: 10px;
+            background-color: #5bc0de;
+            border-color: #46b8da;
+        }
+        .btn-info:hover {
+            background-color: #31b0d5;
+            border-color: #269abc;
+        }
+        .img-preview {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .img-preview img {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .result-list {
+            margin-top: 20px;
+            padding-left: 0;
+            list-style: none;
+        }
+        .result-list li {
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            padding: 10px;
+            color: #333;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">Chest X ray detection</h1>
+    <div class="container">
+        <div class="row">
+            <h2>Select a file to upload</h2>
+            <p>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="alert alert-info">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </p>
+            {% if filename %}
+                <div class="img-preview">
+                    <img height="300px" width="300px" src="{{ url_for('display_image', filename=filename) }}">
+                </div>
+            {% endif %}
+            <form method="post" action="/" enctype="multipart/form-data">
+                <dl>
+                    <p>
+                        <input type="file" name="file" class="form-control" autocomplete="off" required>
+                    </p>
+                </dl>
+                <p>
+                    <input type="submit" value="Submit" class="btn btn-info">
+                </p>
+            </form>
+            <div>
+                {% if filename %}
+                    <h3>The above image has:</h3>
+                    <ul class="result-list">
+                        {% for i in range(len) %} 
+                            <li>{{ labels[i] }}</li> 
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
